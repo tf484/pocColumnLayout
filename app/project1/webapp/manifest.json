@@ -1,0 +1,221 @@
+{
+  "_version": "1.59.0",
+  "sap.app": {
+    "id": "project1",
+    "type": "application",
+    "i18n": "i18n/i18n.properties",
+    "applicationVersion": {
+      "version": "0.0.1"
+    },
+    "title": "{{appTitle}}",
+    "description": "{{appDescription}}",
+    "resources": "resources.json",
+    "sourceTemplate": {
+      "id": "@sap/generator-fiori:lrop",
+      "version": "1.13.4",
+      "toolsId": "e12ad9d1-3422-4850-b219-a6f331a5e87b"
+    },
+    "dataSources": {
+      "mainService": {
+        "uri": "/odata/v4/service/columnLayout/",
+        "type": "OData",
+        "settings": {
+          "annotations": [],
+          "odataVersion": "4.0"
+        }
+      }
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "icons": {
+      "icon": "",
+      "favIcon": "",
+      "phone": "",
+      "phone@2": "",
+      "tablet": "",
+      "tablet@2": ""
+    },
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "flexEnabled": true,
+    "dependencies": {
+      "minUI5Version": "1.124.1",
+      "libs": {
+        "sap.m": {},
+        "sap.ui.core": {},
+        "sap.ushell": {},
+        "sap.fe.templates": {},
+        "sap.f": {}
+      }
+    },
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "project1.i18n.i18n"
+        }
+      },
+      "": {
+        "dataSource": "mainService",
+        "preload": true,
+        "settings": {
+          "synchronizationMode": "None",
+          "operationMode": "Server",
+          "autoExpandSelect": true,
+          "earlyRequests": true
+        }
+      },
+      "@i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "uri": "i18n/i18n.properties"
+      }
+    },
+    "resources": {
+      "css": []
+    },
+    "routing": {
+      "config": {
+        "flexibleColumnLayout": {
+          "defaultTwoColumnLayoutType": "TwoColumnsBeginExpanded",
+          "defaultThreeColumnLayoutType": "ThreeColumnsMidExpanded"
+        },
+        "routerClass": "sap.f.routing.Router"
+      },
+      "routes": [
+        {
+          "pattern": ":?query:",
+          "name": "EntityAList",
+          "target": [
+            "EntityAList"
+          ]
+        },
+        {
+          "pattern": "EntityA({key}):?query:",
+          "name": "EntityAObjectPage",
+          "target": [
+            "EntityAList",
+            "EntityAObjectPage"
+          ]
+        },
+        {
+          "pattern": "EntityA({key})/subEntityA1({key2}):?query:",
+          "name": "EntityA1ObjectPage",
+          "target": [
+            "EntityAList",
+            "EntityAObjectPage",
+            "EntityA1ObjectPage"
+          ]
+        },
+        {
+          "pattern": "EntityA({key})/subEntityA1({key2})/subEntityA1_2({key3}):?query:",
+          "name": "EntityA_subEntityA1_subEntityA1_2ObjectPage",
+          "target": [
+            "EntityA_subEntityA1_subEntityA1_2ObjectPage"
+          ]
+        }
+      ],
+      "targets": {
+        "EntityAList": {
+          "type": "Component",
+          "id": "EntityAList",
+          "name": "sap.fe.templates.ListReport",
+          "options": {
+            "settings": {
+              "contextPath": "/EntityA",
+              "variantManagement": "Page",
+              "navigation": {
+                "EntityA": {
+                  "detail": {
+                    "route": "EntityAObjectPage"
+                  }
+                }
+              },
+              "controlConfiguration": {
+                "@com.sap.vocabularies.UI.v1.LineItem": {
+                  "tableSettings": {
+                    "type": "ResponsiveTable"
+                  }
+                }
+              }
+            }
+          },
+          "controlAggregation": "beginColumnPages",
+          "contextPattern": ""
+        },
+        "EntityAObjectPage": {
+          "type": "Component",
+          "id": "EntityAObjectPage",
+          "name": "sap.fe.templates.ObjectPage",
+          "options": {
+            "settings": {
+              "editableHeaderContent": false,
+              "contextPath": "/EntityA",
+              "navigation": {
+                "subEntityA1": {
+                  "detail": {
+                    "route": "EntityA1ObjectPage"
+                  }
+                }
+              }
+            }
+          },
+          "controlAggregation": "beginColumnPages",
+          "contextPattern": "/EntityA({key})"
+        },
+        "EntityA1ObjectPage": {
+          "type": "Component",
+          "id": "EntityA1ObjectPage",
+          "name": "sap.fe.templates.ObjectPage",
+          "options": {
+            "settings": {
+              "editableHeaderContent": false,
+              "contextPath": "/EntityA/subEntityA1",
+              "navigation": {
+                "subEntityA1_2": {
+                  "detail": {
+                    "route": "EntityA_subEntityA1_subEntityA1_2ObjectPage"
+                  }
+                }
+              }
+            }
+          },
+          "controlAggregation": "midColumnPages",
+          "contextPattern": "/EntityA({key})/subEntityA1({key2})"
+        },
+        "EntityA_subEntityA1_subEntityA1_2ObjectPage": {
+          "type": "Component",
+          "id": "EntityA_subEntityA1_subEntityA1_2ObjectPage",
+          "name": "sap.fe.templates.ObjectPage",
+          "options": {
+            "settings": {
+              "contextPath": "/EntityA/subEntityA1/subEntityA1_2",
+              "navigation": {}
+            }
+          },
+          "controlAggregation": "endColumnPages",
+          "contextPattern": "/EntityA({key})/subEntityA1({key2})/subEntityA1_2({key3})"
+        }
+      }
+    },
+    "rootView": {
+      "viewName": "sap.fe.templates.RootContainer.view.Fcl",
+      "type": "XML",
+      "async": true,
+      "id": "appRootView"
+    }
+  },
+  "sap.fiori": {
+    "registrationIds": [],
+    "archeType": "transactional"
+  }
+}
